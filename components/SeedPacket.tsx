@@ -9,10 +9,11 @@ import "./packet.css";
 /**
  * The seed packet — a project preview tied with a jute twine bow.
  * Clicking the flap unties the bow (GSAP morphs each string piece through
- * tied → loosened → exit shapes), lifts the flap, and slides a slip card
+ * tied → loosened → dangling shapes), lifts the flap, and slides a slip card
  * out with the thumbnail, summary and a "View project" link to the
  * case-study page. Clicking the flap again reverses the whole sequence.
- * Ported from the approved demo-61 build; the twine layer sits above the
+ * Ported from the approved demo build (demo-67 state: dangling ribbon,
+ * two-sided flap); the twine layer sits above the
  * flap (z-index 7) so the full bow stays visible in both settled states.
  */
 
@@ -20,23 +21,23 @@ const S = {
   loopL: {
     tied: "M160,60 C128,26 84,22 78,44 C73,64 108,78 160,60",
     loose: "M160,60 C134,32 96,28 90,46 C85,63 112,74 160,60",
-    exit: "M150,120 C110,180 92,250 96,330 C98,366 84,404 60,428",
+    dangle: "M160,60 C116,92 76,140 72,200 C69,246 78,278 66,302",
   },
   loopR: {
     tied: "M160,60 C190,30 228,28 234,46 C238,62 204,74 160,60",
     loose: "M160,60 C182,36 214,34 219,48 C222,60 196,70 160,60",
     gone: "M160,60 C169,52 181,51 185,57 C188,62 173,67 160,60",
-    exit: "M196,110 C232,170 248,240 244,322 C242,358 256,396 280,420",
+    dangle: "M160,60 C202,90 240,138 246,196 C250,240 242,272 256,298",
   },
   tailR: {
     tied: "M163,63 C184,82 192,102 188,124 C187,131 190,138 196,142",
     loose: "M163,63 C202,76 234,94 250,124 C236,108 222,99 205,95 C224,106 240,114 256,118",
-    exit: "M206,120 C238,180 252,250 248,330 C246,364 260,400 282,424",
+    dangle: "M163,63 C188,82 204,108 206,136 C207,160 202,176 210,192",
   },
   tailL: {
     tied: "M157,63 C134,86 126,110 129,136 C130,143 127,149 121,153",
     loose: "M157,63 C136,84 129,106 131,130 C132,137 129,143 124,147",
-    exit: "M150,130 C118,190 104,260 108,338 C110,372 96,408 74,430",
+    dangle: "M157,63 C132,84 116,112 114,142 C112,166 118,182 110,198",
   },
 } as const;
 
@@ -172,14 +173,17 @@ export default function SeedPacket({ project, index }: { project: Project; index
         .to(".knotG", { scale: 1.07, transformOrigin: "160px 60px", duration: 0.4 }, 1.05)
         .to(M("loopL"), { attr: { d: S.loopL.loose }, duration: 0.35 }, 1.05)
         .to(".fibre", { opacity: 0, duration: 0.3 }, 1.1)
-        .to(M("loopL"), { attr: { d: S.loopL.exit }, duration: 0.65, ease: "power1.inOut" }, 1.45)
-        .to(M("loopR"), { attr: { d: S.loopR.exit }, duration: 0.65 }, 1.5)
-        .to(M("tailR"), { attr: { d: S.tailR.exit }, duration: 0.65 }, 1.55)
-        .to(M("tailL"), { attr: { d: S.tailL.exit }, duration: 0.65 }, 1.6)
+        .to(M("loopL"), { attr: { d: S.loopL.dangle }, duration: 0.65, ease: "power1.inOut" }, 1.45)
+        .to(M("loopR"), { attr: { d: S.loopR.dangle }, duration: 0.65 }, 1.5)
+        .to(M("tailR"), { attr: { d: S.tailR.dangle }, duration: 0.65 }, 1.55)
+        .to(M("tailL"), { attr: { d: S.tailL.dangle }, duration: 0.65 }, 1.6)
         .to(".strw", { y: -7, opacity: 0, duration: 0.5 }, 1.6)
-        .to(".knotG", { x: 52, y: 64, scale: 0.8, transformOrigin: "160px 60px", duration: 0.6 }, 1.65)
-        .to(".pk-twine", { y: 46, opacity: 0, duration: 0.5, ease: "power1.in" }, 2.25)
-        .to(".pk-flap", { rotationX: -165, filter: "brightness(.86)", duration: 0.75 }, 2.8)
+        .to(".knotG", { y: 6, scale: 0.94, transformOrigin: "160px 60px", duration: 0.5 }, 1.65)
+        .to(".pk-twine", { rotation: 1.3, transformOrigin: "160px 60px", duration: 0.55, ease: "sine.inOut" }, 2.3)
+        .to(".pk-twine", { rotation: -0.9, duration: 0.65, ease: "sine.inOut" }, 2.85)
+        .to(".pk-twine", { rotation: 0.45, duration: 0.6, ease: "sine.inOut" }, 3.5)
+        .to(".pk-twine", { rotation: 0, duration: 0.6, ease: "sine.out" }, 4.1)
+        .to(".pk-flap", { rotationX: -165, duration: 0.75 }, 2.8)
         .to(".pk-slip", { y: -184, rotation: -2, duration: 0.7, ease: "power2.out" }, 3.45)
         .to(".pk-close-cue", { opacity: 0.9, duration: 0.4 }, 3.95);
 
@@ -223,7 +227,10 @@ export default function SeedPacket({ project, index }: { project: Project; index
             aria-expanded="false"
             aria-controls={slipId}
             aria-label="Open project packet"
-          />
+          >
+            <span className="pk-flap-front" aria-hidden="true" />
+            <span className="pk-flap-back" aria-hidden="true" />
+          </button>
           <p className="pk-brand">IRIS SEED CO.</p>
           <IrisMark />
           <h3 className="pk-title">{project.title}</h3>
