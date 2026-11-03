@@ -16,7 +16,7 @@ const HERO_SRC = "/images/hero.webp";
 const PETALS = ["/images/petal-1.png", "/images/petal-2.png", "/images/petal-3.png"];
 const NAV = [
   { href: "#about", label: "about me", target: "about" },
-  { href: "#work", label: "my work", target: "work" },
+  { href: "#work", label: "my projects", target: "work" },
   { href: "#hello", label: "say hello", target: "hello" },
 ];
 

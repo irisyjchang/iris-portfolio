@@ -163,8 +163,7 @@ export default function SeedPacket({ project, index }: { project: Project; index
           link.setAttribute("tabindex", "-1");
         },
       });
-      tl.to(".pk-cue", { opacity: 0, duration: 0.25 }, 0)
-        .to(".fray", { opacity: 0, duration: 0.25 }, 0.05)
+      tl.to(".fray", { opacity: 0, duration: 0.25 }, 0.05)
         .to(".pk-twine", { scale: 0.97, transformOrigin: "160px 60px", duration: 0.35, ease: "power2.out" }, 0)
         .to(M("tailR"), { attr: { d: S.tailR.loose }, duration: 0.5, ease: "power2.out" }, 0)
         .to(M("loopR"), { attr: { d: S.loopR.loose }, duration: 0.5 }, 0.05)
@@ -234,9 +233,6 @@ export default function SeedPacket({ project, index }: { project: Project; index
           <p className="pk-desc">{project.summary}</p>
           <p className="pk-foot">SOWN WITH CARE · EST. 2026</p>
           <Twine />
-          <span className="pk-cue" aria-hidden="true">
-            Untie to explore
-          </span>
           <span className="pk-close-cue" aria-hidden="true">
             Close packet
           </span>

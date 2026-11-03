@@ -10,7 +10,7 @@ export default function Home() {
       <Hero />
       <main>
         <section className="page" id="work">
-          <h2>my work</h2>
+          <h2>my projects</h2>
           <p className="lead">
             Selected UI/UX case studies, each one a seed packet tied with twine. Untie a bow to
             peek inside, then open the full case study.

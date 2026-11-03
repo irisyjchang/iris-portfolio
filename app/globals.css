@@ -146,6 +146,7 @@ body.revealed .hero .intro h1, body.reduced .hero .intro h1 { opacity: 1; filter
 /* ---------- Page sections ---------- */
 section.page { padding: 84px 22px; max-width: 1120px; margin: 0 auto; }
 section.page h2 { font-family: Caveat, cursive; font-size: 52px; margin: 0 0 8px; color: #36443a; }
+#work h2 { color: #7d7b73; }
 .lead { color: #55645b; max-width: 640px; line-height: 1.6; }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
 .split img { width: 100%; height: 440px; object-fit: cover; border-radius: 22px; border: 1.5px solid #ddd2b8; }

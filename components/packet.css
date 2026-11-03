@@ -34,7 +34,6 @@
 .pk-twine #knotCore{fill:#6d5326;opacity:.28}
 .pk-twine .fibre{fill:none;stroke:#c9ae7d;stroke-width:.8;opacity:.45;stroke-linecap:round}
 .pk-twine .fray{fill:none;stroke:#b89a67;stroke-width:.85;opacity:.55;stroke-linecap:round}
-.pk-cue{position:absolute;top:100px;right:12px;transform:rotate(-2deg);font-family:'Reenie Beanie',cursive;font-size:20px;color:#7d7b73;opacity:.85;z-index:5;pointer-events:none}
 .pk-close-cue{position:absolute;top:78px;left:14px;transform:rotate(2deg);font-family:'Reenie Beanie',cursive;font-size:20px;color:#7d7b73;opacity:0;z-index:5;pointer-events:none}
 .pk-slip{position:absolute;left:7%;right:7%;top:12px;z-index:1;background:#fffdf6;border-radius:6px;box-shadow:0 10px 24px rgba(80,60,25,.22);padding:14px 16px 16px;transform:translateY(26px);pointer-events:auto}
 .pk-slip-tape{position:absolute;top:-10px;left:22px;width:64px;height:20px;background:linear-gradient(rgba(243,236,210,.92),rgba(238,230,200,.78));transform:rotate(-5deg);box-shadow:0 1px 2px rgba(90,75,40,.15)}
