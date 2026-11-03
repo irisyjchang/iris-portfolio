@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Self-hosted scrapbook fonts (files in /public/fonts) */
+@font-face {
+  font-family: 'Reenie Beanie';
+  src: url('/fonts/Reenie-Beanie.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/Caveat.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/Caveat-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  color: #2f3a33;
+  background: #f7f1de; /* notebook paper */
+}
+:focus-visible { outline: 3px solid #7a5aa6; outline-offset: 3px; border-radius: 8px; }
+.hand { font-family: Caveat, cursive; }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; overflow: hidden; background: #f7f1de; }
+.hero-img { position: relative; display: block; width: 100%; height: auto; object-fit: contain; z-index: 0; }
+.fg-layer {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill;
+  z-index: 1; pointer-events: none; transform-origin: 50% 100%;
+  animation: fgSway 6.3s cubic-bezier(.45, .03, .55, .97) infinite alternate;
+}
+@keyframes fgSway {
+  0% { transform: rotate(-.55deg) translateX(-2px); }
+  50% { transform: rotate(0deg) translateX(0); }
+  100% { transform: rotate(.55deg) translateX(2px); }
+}
+#rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; display: block; }
+
+/* Tape intro — the writing lives ON a realistic tape strip, top-right of the hero */
+.hero .intro {
+  display: block; position: absolute; z-index: 6; right: 4%; top: 7%;
+  transform: rotate(-1.6deg); text-align: center; width: auto; max-width: 88vw;
+  padding: 15px 54px 12px; background: none; border: none; box-shadow: none;
+}
+.hero .intro::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background-image: url('/images/tape-strip.webp');
+  background-size: 100% 100%; background-repeat: no-repeat;
+}
+.hero .intro h1 {
+  position: relative; font-family: Caveat, cursive; font-weight: 600;
+  font-size: clamp(32px, 4.6vw, 48px); color: #5b4632; margin: 0; letter-spacing: .01em;
+  opacity: 0; filter: blur(7px); transition: opacity 1.4s ease, filter 1.4s ease;
+}
+body.revealed .hero .intro h1, body.reduced .hero .intro h1 { opacity: 1; filter: blur(0); }
+.hero .intro h1 .size-ghost { visibility: hidden; }
+.hero .intro h1 svg {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -52%);
+  height: 96%; width: auto; display: block; overflow: visible;
+}
+.hero .intro svg text { font-family: 'Reenie Beanie', cursive; font-size: 84px; fill: #7d7b73; }
+.hero .intro svg .wstroke {
+  stroke: #fff; stroke-width: 12; fill: none; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+}
+
+/* Falling-petal navigation */
+.petal-fall-nav { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.petal-fall {
+  position: absolute; z-index: 5; display: flex; align-items: center; gap: 9px;
+  text-decoration: none; color: #33302a; pointer-events: auto; opacity: 0;
+  animation: petalFall 4.4s cubic-bezier(.3, .6, .4, 1) forwards;
+  --x0: 24px; --x1: -20px; --x2: 12px; --r0: -130deg; --tilt: 0deg;
+}
+.petal-fall:nth-child(1) { left: 15%; bottom: 6%; animation-delay: .7s; }
+.petal-fall:nth-child(2) { left: 44%; bottom: 4%; animation-delay: 1.5s; animation-duration: 4.9s; }
+.petal-fall:nth-child(3) { left: 72%; bottom: 6%; animation-delay: 2.3s; animation-duration: 5.3s; }
+@keyframes petalFall {
+  0% { transform: translate(var(--x0), -215px) rotate(var(--r0)); opacity: 0; }
+  13% { opacity: 1; }
+  40% { transform: translate(var(--x1), -122px) rotate(calc(var(--r0) * .42)); }
+  70% { transform: translate(var(--x2), -54px) rotate(calc(var(--tilt) * -1.5)); }
+  90% { transform: translate(calc(var(--x2) * .25), -11px) rotate(calc(var(--tilt) * .55)); }
+  100% { transform: translate(0, 0) rotate(var(--tilt)); opacity: 1; }
+}
+.big-petal { position: relative; display: block; width: clamp(108px, 12.5vw, 138px); transition: transform .25s ease; }
+.petal-fall:hover .big-petal, .petal-fall:focus-visible .big-petal { transform: translateY(-4px) scale(1.03); }
+.petal-photo { display: block; width: 100%; height: auto; }
+.big-petal .petal-label {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 30px 10px 8px; font-size: clamp(19px, 2vw, 24px); line-height: 1.05;
+  color: #7d7b73; background: none;
+  text-shadow: 0 1px 0 rgba(247, 241, 222, .9), 0 0 9px rgba(247, 241, 222, .85), 0 0 3px rgba(247, 241, 222, .9);
+  opacity: 0; transition: opacity .8s ease;
+}
+.petal-fall.settled .petal-label { opacity: 1; }
+@media (max-width: 760px) {
+  .big-petal { width: 100px; }
+  .petal-fall:nth-child(1) { left: 6%; }
+  .petal-fall:nth-child(2) { left: 38%; }
+  .petal-fall:nth-child(3) { left: 68%; }
+}
+
+/* Flutter for the three navigation petals while they fall (stops when they settle) */
+@keyframes petalFlutter {
+  from { transform: rotate(-3.6deg) rotateX(11deg); }
+  to { transform: rotate(3.6deg) rotateX(-13deg); }
+}
+.hero .petal-fall:not(.settled) .big-petal { animation: petalFlutter 1.6s ease-in-out infinite alternate; }
+.hero .petal-fall:nth-child(2):not(.settled) .big-petal { animation-duration: 1.85s; }
+.hero .petal-fall:nth-child(3):not(.settled) .big-petal { animation-duration: 1.45s; }
+
+/* Decorative petals: smaller, softer, non-interactive, land scattered in the grass */
+.deco-petals { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.deco-petal {
+  position: absolute; display: block; opacity: 0; filter: saturate(.88);
+  animation-name: decoFall; animation-timing-function: cubic-bezier(.35, .55, .45, 1);
+  animation-fill-mode: forwards; animation-iteration-count: 1;
+}
+.deco-petal img { display: block; width: 100%; height: auto; }
+.deco-petal.rest { animation: none; opacity: var(--op); transform: rotate(var(--tilt)); }
+@keyframes decoFall {
+  0% { transform: translate(calc(var(--sway) * -1), calc(var(--drop) * -1)) rotate(var(--r0)); opacity: 0; }
+  10% { opacity: var(--op); }
+  38% { transform: translate(var(--sway), calc(var(--drop) * -.58)) rotate(var(--r1)); }
+  68% { transform: translate(calc(var(--sway) * -.6), calc(var(--drop) * -.27)) rotate(var(--r2)); }
+  88% { transform: translate(calc(var(--sway) * .25), calc(var(--drop) * -.06)) rotate(calc(var(--tilt) * 1.7)); }
+  100% { transform: translate(0, 0) rotate(var(--tilt)); opacity: var(--op); }
+}
+
+/* ---------- Page sections ---------- */
+section.page { padding: 84px 22px; max-width: 1120px; margin: 0 auto; }
+section.page h2 { font-family: Caveat, cursive; font-size: 52px; margin: 0 0 8px; color: #36443a; }
+.lead { color: #55645b; max-width: 640px; line-height: 1.6; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+.split img { width: 100%; height: 440px; object-fit: cover; border-radius: 22px; border: 1.5px solid #ddd2b8; }
+@media (max-width: 760px) { .split { grid-template-columns: 1fr; } }
+form { display: grid; gap: 12px; max-width: 560px; }
+input, textarea {
+  width: 100%; padding: 13px 14px; border: 1px solid #d8cfb4; border-radius: 12px;
+  font: inherit; background: #fffdf8;
+}
+button.send { background: #5d477e; color: white; border: 0; padding: 13px 18px; border-radius: 999px; font-weight: 700; cursor: pointer; }
+footer { text-align: center; padding: 36px; color: #6b6250; }
+footer a { color: #5d477e; }
+
+/* Seed-packet row on the home page */
+.packets-grid { display: flex; flex-wrap: wrap; gap: 40px 34px; justify-content: center; padding: 30px 0 10px; }
+
+/* ---------- Case-study pages (editorial) ---------- */
+.cs { max-width: 760px; margin: 0 auto; padding: 40px 22px 90px; }
+.cs-back {
+  font-family: 'Reenie Beanie', cursive; font-size: 23px; color: #7d7b73;
+  text-decoration: none; display: inline-block; margin-bottom: 30px;
+}
+.cs-back:hover { text-decoration: underline; text-underline-offset: 4px; }
+.cs-kicker { letter-spacing: .3em; font-size: 11px; color: #8a7f63; text-transform: uppercase; margin: 0; }
+.cs-title { font-family: Caveat, cursive; font-size: clamp(44px, 7vw, 64px); color: #36443a; margin: 6px 0 10px; line-height: 1.05; }
+.cs-meta { display: flex; gap: 26px; flex-wrap: wrap; margin: 14px 0 20px; font-size: 14px; color: #6b6250; }
+.cs-meta b { display: block; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: #8a7f63; margin-bottom: 3px; font-weight: 700; }
+.cs-lede { font-size: 19px; line-height: 1.65; color: #435149; }
+.cs-rule { border: 0; border-top: 1.5px solid #ddd2b8; margin: 34px 0 6px; }
+.cs-sec { margin: 42px 0; }
+.cs-sec h3 { font-family: Georgia, 'Times New Roman', serif; font-size: 26px; color: #3c4a41; margin: 0 0 12px; }
+.cs-sec p { line-height: 1.78; color: #3f4a42; font-size: 16.5px; margin: 0 0 14px; }
+figure.cs-fig { margin: 42px 0; }
+figure.cs-fig img { width: 100%; height: auto; display: block; border-radius: 14px; border: 1.5px solid #ddd2b8; }
+figcaption.cs-cap {
+  font-family: 'Reenie Beanie', cursive; font-size: 20px; color: #7d7b73;
+  text-align: center; margin-top: 10px; line-height: 1.3;
+}
+.cs-ba { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 42px 0; }
+.cs-ba figure { margin: 0; }
+.cs-ba .ba-tag {
+  display: inline-block; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: #8a7f63; font-weight: 700; margin-bottom: 6px;
+}
+@media (max-width: 640px) { .cs-ba { grid-template-columns: 1fr; } }
+.cs-video { margin: 42px 0; }
+.cs-video video { width: 100%; display: block; border-radius: 14px; border: 1.5px solid #ddd2b8; background: #000; }
+.cs-video-ph {
+  border: 2px dashed #cbbfa0; border-radius: 14px; padding: 46px 20px; text-align: center;
+  color: #8a7f63; font-family: 'Reenie Beanie', cursive; font-size: 23px; background: rgba(255, 253, 244, .6);
+}
+.cs-proto {
+  display: inline-block; background: #5d477e; color: #fff; padding: 13px 24px;
+  border-radius: 999px; font-weight: 700; text-decoration: none; margin: 10px 0 4px;
+}
+.cs-proto:hover { background: #46335f; }
+.cs-foot {
+  margin-top: 74px; border-top: 1.5px solid #ddd2b8; padding-top: 24px;
+  display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: baseline;
+}
+.cs-next { font-family: Caveat, cursive; font-size: 26px; color: #5d477e; text-decoration: none; }
+.cs-next:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* ---------- Motion preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .hero .intro h1 { opacity: 1 !important; filter: none !important; }
+  .petal-fall { opacity: 1 !important; }
+  .petal-fall .petal-label { opacity: 1 !important; }
+  .deco-petal { animation: none !important; }
+}
